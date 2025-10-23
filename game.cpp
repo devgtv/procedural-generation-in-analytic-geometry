@@ -72,7 +72,7 @@ void mostraLabirinto(const vector<vector<char>> &lab, int px, int py) {
 
 int main() {
     srand(time(0));
-
+     // oi henrique
     vector<vector<char>> lab = {
         {'E',' ','X','D',' '},
         {'X',' ','X',' ',' '},
