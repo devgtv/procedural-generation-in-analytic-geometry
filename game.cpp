@@ -10,11 +10,11 @@ struct Vetor {
     int y;
 };
 
-// Função que gera desafios para a soma de vetores
 bool desafioVetores() {
     Vetor A{rand() % 11 - 5, rand() % 11 - 5};
     Vetor B{rand() % 11 - 5, rand() % 11 - 5};
 
+    system("cls"); 
     cout << "\n=== Desafio Vetores ===" << endl;
     cout << "A = (" << A.x << "," << A.y << ")\n";
     cout << "B = (" << B.x << "," << B.y << ")\n";
@@ -28,23 +28,17 @@ bool desafioVetores() {
 
     if (rx == A.x + B.x && ry == A.y + B.y) {
         cout << "CORRETO! Caminho liberado!\n";
+        Sleep(2000); 
+        system("cls"); 
         return true;
     } else {
         cout << "ERRADO!\n";
+        Sleep(2000); 
+        system("cls"); 
         return false;
     }
 }
 
-// Função para limpar a tela de forma compatível
-void limpaTela() {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
-}
-
-// Função para imprimir o labirinto
 void mostraLabirinto(const vector<vector<char>> &lab, int px, int py) {
     for (int i = 0; i < lab.size(); i++) {
         for (int j = 0; j < lab[i].size(); j++) {
@@ -71,12 +65,8 @@ int main() {
     int px = 0, py = 0;
     int tentativas = 3;
 
-    cout << "=== LABIRINTO DOS VETORES ===" << endl;
-    cout << "Movimentos: W (cima), S (baixo), A (esquerda), D (direita)" << endl;
-    cout << "Resolva desafios para continuar!\n" << endl;
-
     while (true) {
-        limpaTela(); // 🔹 limpa o terminal antes de mostrar o labirinto
+        system("cls");  // limpa tela no início de cada 
 
         cout << "=== LABIRINTO DOS VETORES ===" << endl;
         cout << "\nTentativas restantes: " << tentativas << endl;
@@ -93,18 +83,19 @@ int main() {
         else if (move == 'D' || move == 'd') ny++;
         else {
             cout << "Comando inválido!" << endl;
+            Sleep(2000);
             continue;
         }
 
         if (nx < 0 || ny < 0 || nx >= lab.size() || ny >= lab[0].size()) {
             cout << "Movimento inválido (fora do mapa)!" << endl;
-            Sleep(50);
+            Sleep(2000);
             continue;
         }
 
         if (lab[nx][ny] == 'X') {
             cout << "PAREDE! Escolha outro caminho." << endl;
-            Sleep(50);
+            Sleep(2000);
             continue;
         }
 
@@ -114,7 +105,7 @@ int main() {
                 tentativas--;
                 if (tentativas == 0) {
                     cout << "\nVocê perdeu todas as tentativas. FIM DE JOGO.\n";
-                    Sleep(50);
+                    Sleep(3000);
                     break;
                 }
                 continue;
@@ -126,8 +117,8 @@ int main() {
         py = ny;
 
         if (lab[px][py] == 'S') {
-            limpaTela();
-            cout << "\nPARABÉNS! Você chegou à saída!\n";
+            cout << "\nPARABENS \n";
+            Sleep(3000);
             break;
         }
     }
