@@ -13,14 +13,23 @@ struct Vetor {
 };
 
 bool desafioVetores() {
+    // Gera vetores aleatórios
     Vetor A{rand() % 11 - 5, rand() % 11 - 5, rand() % 11 - 5};
     Vetor B{rand() % 11 - 5, rand() % 11 - 5, rand() % 11 - 5};
 
-    system("cls"); 
+    system("cls");
     cout << "\n=== Desafio Vetores (R³) ===" << endl;
     cout << "A = (" << A.x << "," << A.y << "," << A.z << ")\n";
     cout << "B = (" << B.x << "," << B.y << "," << B.z << ")\n";
-    cout << "Calcule A + B = (?, ?, ?)\n";
+
+    // Escolhe operação aleatória (0 = subtração, 1 = soma)
+    int operacao = rand() % 2;
+
+    // Mostra qual operação o jogador deve calcular
+    if (operacao == 1)
+        cout << "Calcule A + B = (?, ?, ?)\n";
+    else
+        cout << "Calcule A - B = (?, ?, ?)\n";
 
     int rx, ry, rz;
     cout << "Digite o valor de x: ";
@@ -30,18 +39,24 @@ bool desafioVetores() {
     cout << "Digite o valor de z: ";
     cin >> rz;
 
-    if (rx == A.x + B.x && ry == A.y + B.y && rz == A.z + B.z) {
+    // Verifica se a resposta está correta
+    bool correto = (operacao == 1) ?
+                   (rx == A.x + B.x && ry == A.y + B.y && rz == A.z + B.z) :
+                   (rx == A.x - B.x && ry == A.y - B.y && rz == A.z - B.z);
+
+    // Mostra resultado, espera 2s e limpa tela
+    if (correto)
         cout << "CORRETO! Caminho liberado!\n";
-        Sleep(2000); 
-        system("cls"); 
-        return true;
-    } else {
+    else
         cout << "ERRADO!\n";
-        Sleep(2000); 
-        system("cls"); 
-        return false;
-    }
+
+    Sleep(2000);
+    system("cls");
+
+    return correto;
 }
+
+
 
 void mostraLabirinto(const vector<vector<char>> &lab, int px, int py) {
     for (int i = 0; i < lab.size(); i++) {
