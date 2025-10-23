@@ -3,31 +3,34 @@
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
-#include <limits> // para std::numeric_limits
+#include <limits>
 using namespace std;
 
 struct Vetor {
     int x;
     int y;
+    int z;
 };
 
 bool desafioVetores() {
-    Vetor A{rand() % 11 - 5, rand() % 11 - 5};
-    Vetor B{rand() % 11 - 5, rand() % 11 - 5};
+    Vetor A{rand() % 11 - 5, rand() % 11 - 5, rand() % 11 - 5};
+    Vetor B{rand() % 11 - 5, rand() % 11 - 5, rand() % 11 - 5};
 
     system("cls"); 
-    cout << "\n=== Desafio Vetores ===" << endl;
-    cout << "A = (" << A.x << "," << A.y << ")\n";
-    cout << "B = (" << B.x << "," << B.y << ")\n";
-    cout << "Calcule A + B = (?,?)\n";
+    cout << "\n=== Desafio Vetores (R³) ===" << endl;
+    cout << "A = (" << A.x << "," << A.y << "," << A.z << ")\n";
+    cout << "B = (" << B.x << "," << B.y << "," << B.z << ")\n";
+    cout << "Calcule A + B = (?, ?, ?)\n";
 
-    int rx, ry;
+    int rx, ry, rz;
     cout << "Digite o valor de x: ";
     cin >> rx;
     cout << "Digite o valor de y: ";
     cin >> ry;
+    cout << "Digite o valor de z: ";
+    cin >> rz;
 
-    if (rx == A.x + B.x && ry == A.y + B.y) {
+    if (rx == A.x + B.x && ry == A.y + B.y && rz == A.z + B.z) {
         cout << "CORRETO! Caminho liberado!\n";
         Sleep(2000); 
         system("cls"); 
@@ -120,7 +123,7 @@ int main() {
         py = ny;
 
         if (lab[px][py] == 'S') {
-            cout << "\nPARABENS \n";
+            cout << "\nPARABÉNS! Você chegou ao final!\n";
             Sleep(3000);
             break;
         }
