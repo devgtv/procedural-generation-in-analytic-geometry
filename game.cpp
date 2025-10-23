@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <windows.h>
+#include <limits> // para std::numeric_limits
 using namespace std;
 
 struct Vetor {
@@ -66,14 +67,16 @@ int main() {
     int tentativas = 3;
 
     while (true) {
-        system("cls");  // limpa tela no início de cada 
+        system("cls");
 
         cout << "=== LABIRINTO DOS VETORES ===" << endl;
         cout << "\nTentativas restantes: " << tentativas << endl;
         mostraLabirinto(lab, px, py);
         cout << "Seu movimento: ";
+
         char move;
         cin >> move;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         int nx = px, ny = py;
 
