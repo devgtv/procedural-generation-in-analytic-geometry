@@ -75,7 +75,7 @@ bool desafioVetores() {
     return correto;
 }
 
-
+// teste
 
 void mostraLabirinto(const vector<vector<char>> &lab, int px, int py) { // imprime o labirinto na tela do jogador
     for (int i = 0; i < lab.size(); i++) {
