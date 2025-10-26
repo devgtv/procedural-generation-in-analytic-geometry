@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <limits>
 #include <cmath>
+#include <conio.h> // para _getch()
 using namespace std;
 
 struct Vetor {
@@ -18,7 +19,7 @@ bool desafioVetores() {
     Vetor A{rand() % 11 - 5, rand() % 11 - 5, rand() % 11 - 5};
     Vetor B{rand() % 11 - 5, rand() % 11 - 5, rand() % 11 - 5};
 
-    system("cls"); // LIMPA TELA
+    system("cls"); // limpa tela
     cout << "\n=== Desafio Vetores (R³) ===" << endl;
     cout << "A = (" << A.x << "," << A.y << "," << A.z << ")\n";
     cout << "B = (" << B.x << "," << B.y << "," << B.z << ")\n";
@@ -58,7 +59,6 @@ bool desafioVetores() {
         correto = (fabs(rm - m) < 0.1); // tolerância de uma casa decimal
     }
 
-    // Mostra resultado, espera 2s e limpa tela
     if (correto)
         cout << "CORRETO! Caminho liberado!\n";
     else
@@ -84,7 +84,7 @@ void mostraLabirinto(const vector<vector<char>> &lab, int px, int py) {
 
 int main() {
     SetConsoleOutputCP(65001);
-    srand(time(0)); // inicializa o rand() com base no tempo atual
+    srand(time(0)); // inicializa rand() com base no tempo atual
 
     vector<vector<char>> lab = {
         {'E',' ','X','D',' '},
@@ -96,18 +96,18 @@ int main() {
 
     int px = 0, py = 0;
     int tentativas = 3;
+    char move; // declaração única da variável
 
     while (true) {
-        system("cls");
+        system("cls"); // limpa a tela no início do loop
 
         cout << "=== LABIRINTO DOS VETORES ===" << endl;
         cout << "\nTentativas restantes: " << tentativas << endl;
         mostraLabirinto(lab, px, py);
         cout << "Seu movimento: ";
 
-        char move;
-        cin >> move;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        move = _getch(); // lê tecla sem precisar de Enter
+        cout << move << endl; // opcional: mostra a tecla pressionada
 
         int nx = px, ny = py;
 
@@ -117,7 +117,7 @@ int main() {
         else if (move == 'D' || move == 'd') ny++;
         else {
             cout << "Comando inválido!" << endl;
-            Sleep(2000);
+            Sleep(2000); // espera para o jogador ler
             continue;
         }
 
@@ -144,7 +144,7 @@ int main() {
                 }
                 continue;
             }
-            lab[nx][ny] = ' ';
+            lab[nx][ny] = ' '; // remove o desafio se acertou
         }
 
         px = nx;
