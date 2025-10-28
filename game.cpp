@@ -44,7 +44,7 @@ double AnguloEntreVetores(const Vetor &A, const Vetor &B) {
     double cosTheta = ProdutoEscalar(A,B) / (Modulo(A) * Modulo(B));
     if(cosTheta > 1) cosTheta = 1; // evita erro numérico
     if(cosTheta < -1) cosTheta = -1;
-    return acos(cosTheta) * (180.0 / acos(-1)); // substitui M_PI por acos(-1)
+    return acos(cosTheta) * (180.0 / acos(-1)); 
 }
 
 // Função de desafio de vetores
