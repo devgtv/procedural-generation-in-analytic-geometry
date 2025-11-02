@@ -6,8 +6,11 @@
 #include <stack>
 #include <algorithm>
 #include <iomanip>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 #include "vetoresutils.h"
 #include "procgen.h"
+#include "devtools.h"
 
 using namespace std;
 
@@ -18,17 +21,22 @@ void Jogar()
 {
     mt19937 rng(time(nullptr));
 
-    int linhas=15, colunas=21;
-    vector<vector<char>> lab = GerarLabirinto(linhas, colunas, rng, configRNGGlobal);
+    // Parar música do lobby e tocar música do labirinto
+    PlaySound(NULL, 0, 0); // Para qualquer música anterior
+    PlaySound(TEXT("maze.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+
+    vector<vector<char>> lab = GerarLabirinto(configRNGGlobal.linhasLabirinto, configRNGGlobal.colunasLabirinto, rng, configRNGGlobal);
 
     int px=1, py=0;
     int tentativas=3;
+    int pontuacao=0;
     char move;
 
     while(true){
         system("cls");
         cout<<"=== LABIRINTO DOS VETORES ===\n";
         cout<<"\nTentativas restantes: "<<tentativas<<endl;
+        cout<<"Pontuação: "<<pontuacao<<" pontos\n";
         MostraLabirinto(lab,px,py);
         cout<<"Use W/A/S/D para mover.\nSeu movimento: ";
         move=_getch();
@@ -52,12 +60,17 @@ void Jogar()
             if(!acerto){
                 tentativas--;
                 if(tentativas==0){
-                    cout<<"\nVocê perdeu todas as tentativas. FIM DE JOGO.\n";
+                    system("cls");
+                    cout<<"=== FIM DE JOGO ===\n\n";
+                    cout<<"Você perdeu todas as tentativas.\n";
+                    cout<<"Pontuação final: "<<pontuacao<<" pontos\n";
+                    PlaySound(NULL, 0, 0); // Parar música do labirinto
                     Sleep(3000);
                     break;
                 }
                 continue;
             }
+            pontuacao += 10; // Ganha 10 pontos por desafio acertado
             lab[nx][ny]=' ';
         }
 
@@ -65,156 +78,26 @@ void Jogar()
         py=ny;
 
         if(lab[px][py]=='S'){
-            cout<<"\n🎉 PARABÉNS! Você chegou ao final!\n";
+            system("cls");
+            cout<<"=== PARABÉNS! ===\n\n";
+            cout<<"🎉 Você chegou ao final do labirinto!\n";
+            cout<<"Pontuação final: "<<pontuacao<<" pontos\n";
+            PlaySound(NULL, 0, 0); // Parar música do labirinto
             Sleep(3000);
             break;
         }
     }
+    
+    // Parar música do labirinto ao sair
+    PlaySound(NULL, 0, 0);
 }
 
-void ConfigurarProbabilidades()
-{
-    int opcao;
-    string nomesDesafios[] = {
-        "Subtração (A - B)",
-        "Soma (A + B)",
-        "Módulo (|A + B|)",
-        "Produto Escalar (A · B)",
-        "Produto Vetorial (A x B)",
-        "Ângulo entre vetores",
-        "BOSS (Produto Misto)"
-    };
-    
-    while(true){
-        system("cls");
-        cout<<"=== CONFIGURAR PROBABILIDADES DE DESAFIOS ===\n\n";
-        cout<<"Probabilidade atual (peso relativo):\n\n";
-        
-        int totalPeso = 0;
-        for(int i = 0; i < 7; i++){
-            if(i < configRNGGlobal.pesosOperacoes.size())
-                totalPeso += configRNGGlobal.pesosOperacoes[i];
-        }
-        
-        for(int i = 0; i < 7; i++){
-            int peso = (i < configRNGGlobal.pesosOperacoes.size()) ? configRNGGlobal.pesosOperacoes[i] : 0;
-            double percentual = (totalPeso > 0) ? (peso * 100.0 / totalPeso) : 0.0;
-            cout<<(i+1)<<". "<<nomesDesafios[i]<<": peso="<<peso;
-            if(totalPeso > 0) cout<<" ("<<fixed<<setprecision(1)<<percentual<<"%)";
-            cout<<endl;
-        }
-        
-        cout<<"\n8. Multiplicador de quantidade de desafios no labirinto: ";
-        cout<<fixed<<setprecision(2)<<configRNGGlobal.multiplicadorDesafios<<"x\n";
-        
-        cout<<"\n9. Resetar para padrão\n";
-        cout<<"0. Voltar\n\n";
-        cout<<"Escolha uma opção: ";
-        cin>>opcao;
-        
-        if(opcao >= 1 && opcao <= 7){
-            int indice = opcao - 1;
-            if(configRNGGlobal.pesosOperacoes.size() <= indice){
-                configRNGGlobal.pesosOperacoes.resize(indice + 1, 0);
-            }
-            
-            cout<<"\nPeso atual para "<<nomesDesafios[indice]<<": "<<configRNGGlobal.pesosOperacoes[indice]<<endl;
-            cout<<"Novo peso (0-100): ";
-            int novoPeso;
-            cin>>novoPeso;
-            if(novoPeso >= 0 && novoPeso <= 100){
-                configRNGGlobal.pesosOperacoes[indice] = novoPeso;
-            }
-            else{
-                cout<<"Peso inválido! Deve ser entre 0 e 100.\n";
-                Sleep(2000);
-            }
-        }
-        else if(opcao == 8){
-            cout<<"\nMultiplicador atual: "<<configRNGGlobal.multiplicadorDesafios<<endl;
-            cout<<"Novo multiplicador (0.1 a 10.0): ";
-            double novoMult;
-            cin>>novoMult;
-            if(novoMult >= 0.1 && novoMult <= 10.0){
-                configRNGGlobal.multiplicadorDesafios = novoMult;
-            }
-            else{
-                cout<<"Multiplicador inválido! Deve ser entre 0.1 e 10.0.\n";
-                Sleep(2000);
-            }
-        }
-        else if(opcao == 9){
-            configRNGGlobal.pesosOperacoes = {1, 1, 1, 1, 1, 1, 2};
-            configRNGGlobal.multiplicadorDesafios = 1.0;
-            cout<<"\nConfigurações resetadas para padrão!\n";
-            Sleep(2000);
-        }
-        else if(opcao == 0){
-            break;
-        }
-    }
-}
-
-void Devtools()
-{
-    mt19937 rng(time(nullptr));
-    int opcao;
-    
-    while(true){
-        system("cls");
-        cout<<"=== DEVTOOLS ===\n\n";
-        cout<<"1. Configurar probabilidades de desafios (RNG)\n";
-        cout<<"2. Gerar e mostrar labirinto\n";
-        cout<<"3. Testar desafio de vetores\n";
-        cout<<"4. Ver configuração atual\n";
-        cout<<"5. Voltar ao menu\n\n";
-        cout<<"Escolha uma opção: ";
-        cin>>opcao;
-        
-        if(opcao==1){
-            ConfigurarProbabilidades();
-        }
-        else if(opcao==2){
-            system("cls");
-            cout<<"=== GERADOR DE LABIRINTO ===\n\n";
-            int linhas, colunas;
-            cout<<"Número de linhas: ";
-            cin>>linhas;
-            cout<<"Número de colunas: ";
-            cin>>colunas;
-            
-            vector<vector<char>> lab = GerarLabirinto(linhas, colunas, rng, configRNGGlobal);
-            MostraLabirinto(lab, -1, -1);
-            cout<<"\nPressione qualquer tecla para continuar...";
-            _getch();
-        }
-        else if(opcao==3){
-            system("cls");
-            cout<<"=== TESTE DE DESAFIO ===\n\n";
-            bool acerto = DesafioVetores(rng, configRNGGlobal);
-            cout<<"\nResultado: "<<(acerto ? "ACERTOU!" : "ERROU!")<<endl;
-            cout<<"\nPressione qualquer tecla para continuar...";
-            _getch();
-        }
-        else if(opcao==4){
-            system("cls");
-            cout<<"=== CONFIGURAÇÃO ATUAL ===\n\n";
-            cout<<"Pesos das operações:\n";
-            for(int i = 0; i < configRNGGlobal.pesosOperacoes.size(); i++){
-                cout<<"  Operação "<<i<<": "<<configRNGGlobal.pesosOperacoes[i]<<endl;
-            }
-            cout<<"\nMultiplicador de desafios: "<<configRNGGlobal.multiplicadorDesafios<<"x\n";
-            cout<<"\nPressione qualquer tecla para continuar...";
-            _getch();
-        }
-        else if(opcao==5){
-            break;
-        }
-    }
-}
 
 void MostrarMenu()
 {
+    // Tocar música do lobby
+    PlaySound(TEXT("lobby.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+    
     int opcaoSelecionada = 0;
     const int TOTAL_OPCOES = 2;
     char tecla;
@@ -247,13 +130,17 @@ void MostrarMenu()
         }
         else if(tecla == 13 || tecla == '\r'){ // ENTER
             if(opcaoSelecionada == 0){
+                PlaySound(NULL, 0, 0); // Parar música do lobby
                 Jogar();
+                PlaySound(TEXT("lobby.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP); // Voltar música do lobby
             }
             else if(opcaoSelecionada == 1){
-                Devtools();
+                // Manter música do lobby tocando no devtools
+                Devtools(configRNGGlobal);
             }
         }
         else if(tecla == 27){ // ESC
+            PlaySound(NULL, 0, 0); // Parar música ao sair
             break;
         }
     }

@@ -181,6 +181,8 @@ void MostraLabirinto(const vector<vector<char>> &lab, int px, int py)
                 SetConsoleTextAttribute(hConsole, 14); cout<<"★ "; SetConsoleTextAttribute(hConsole, 7);
             } else if(lab[i][j]=='X'){
                 SetConsoleTextAttribute(hConsole, 8); cout<<"■ "; SetConsoleTextAttribute(hConsole, 7);
+            } else if(lab[i][j]=='D'){
+                SetConsoleTextAttribute(hConsole, 12); cout<<"♦ "; SetConsoleTextAttribute(hConsole, 7);
             } else cout<<lab[i][j]<<" ";
         }
         cout<<endl;

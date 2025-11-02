@@ -12,6 +12,9 @@ struct ConfigRNG {
     vector<int> pesosOperacoes = {1, 1, 1, 1, 1, 1, 2}; // Padrão: BOSS tem peso 2
     // Multiplicador para quantidade de desafios no labirinto
     double multiplicadorDesafios = 1.0; // Padrão: quantidade normal
+    // Tamanho do labirinto
+    int linhasLabirinto = 15; // Padrão: 15 linhas
+    int colunasLabirinto = 21; // Padrão: 21 colunas
 };
 
 bool DesafioVetores(mt19937 &rng, const ConfigRNG &config = ConfigRNG());
