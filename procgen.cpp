@@ -31,7 +31,7 @@ using namespace std;
  * Retorno:
  *   bool - true se o usuário acertou o desafio, false caso contrário
  */
-bool DesafioVetores(mt19937 &rng) 
+bool DesafioVetores(mt19937 &rng, const ConfigRNG &config) 
 {
     // Criação de vetores aleatórios A, B e C (C usado apenas no modo BOSS)
     uniform_int_distribution<int> dist(-5, 5);
@@ -45,9 +45,15 @@ bool DesafioVetores(mt19937 &rng)
     cout << "B = (" << B.x << "," << B.y << "," << B.z << ")\n";
 
     // ===============================
-    // Seleção da operação com probabilidade aumentada para o modo BOSS
+    // Seleção da operação usando configuração de pesos customizada
     // ===============================
-    vector<int> opPesos = {0,1,2,3,4,5,6,6}; // operação 6 (BOSS) tem mais chance de ocorrer
+    vector<int> opPesos;
+    for(int i = 0; i < config.pesosOperacoes.size(); i++){
+        for(int j = 0; j < config.pesosOperacoes[i]; j++){
+            opPesos.push_back(i);
+        }
+    }
+    if(opPesos.empty()) opPesos = {0}; // Fallback caso todos os pesos sejam 0
     uniform_int_distribution<int> distOp(0, opPesos.size()-1);
     int operacao = opPesos[distOp(rng)];
 
@@ -198,7 +204,7 @@ void MostraLabirinto(const vector<vector<char>> &lab, int px, int py)
  * Retorno:
  *   vector<vector<char>> - matriz representando o labirinto
  */
-vector<vector<char>> GerarLabirinto(int linhas, int colunas, mt19937 &rng) 
+vector<vector<char>> GerarLabirinto(int linhas, int colunas, mt19937 &rng, const ConfigRNG &config) 
 {
     // Ajuste para garantir número ímpar de linhas e colunas
     if(linhas%2==0) linhas++;
@@ -240,8 +246,8 @@ vector<vector<char>> GerarLabirinto(int linhas, int colunas, mt19937 &rng)
     lab[1][0]='E';
     lab[linhas-2][colunas-1]='S';
 
-    // Inserção de desafios aleatórios
-    int numDesafios=max(1,(linhas*colunas)/30);
+    // Inserção de desafios aleatórios (com multiplicador configurável)
+    int numDesafios = max(1, (int)((linhas*colunas)/30.0 * config.multiplicadorDesafios));
     uniform_int_distribution<int> distX(0, linhas-1);
     uniform_int_distribution<int> distY(0, colunas-1);
 
