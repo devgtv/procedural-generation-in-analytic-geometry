@@ -253,7 +253,15 @@ void Jogar()
             SetConsoleTextAttribute(hConsole, 7); // Branco
             cout<<"🎉 Você chegou ao final do labirinto!\n";
             cout<<"Pontuação final: "<<pontuacao<<" pontos\n\n";
-            Sleep(3000);
+            
+            // Descartar teclas durante a exibição da pontuação
+            for(int i = 0; i < 30; i++){ // 30 x 100ms = 3 segundos
+                Sleep(100);
+                while(_kbhit()) _getch(); // Descartar teclas a cada 100ms
+            }
+            
+            // Descartar todas as teclas restantes antes de mostrar créditos
+            while(_kbhit()) _getch();
             
             // Mostrar créditos
             MostrarCreditos();
