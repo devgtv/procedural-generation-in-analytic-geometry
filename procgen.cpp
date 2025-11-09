@@ -152,12 +152,80 @@ bool DesafioVetores(mt19937 &rng, const ConfigRNG &config)
     }
 
     // Feedback para o usuário
-    if(correto) cout << "✅ CORRETO!\n";
-    else cout << "❌ ERRADO!\n";
+    if(correto) {
+        cout << "✅ CORRETO!\n";
+        Sleep(1000);
+        // Mostrar gráfico 3D dos vetores quando acertar
+        DesenharVetores3D(A, B, C, (operacao == 6)); // Mostrar C apenas no modo BOSS
+        cout << "\nPressione qualquer tecla para continuar...";
+        _getch();
+    } else {
+        cout << "❌ ERRADO!\n";
+    }
 
     Sleep(2000);
     LimparTela();
     return correto;
+}
+
+// =======================
+// Função para desenhar vetores em 3D usando Python/Matplotlib
+// =======================
+void DesenharVetores3D(const Vetor &A, const Vetor &B, const Vetor &C, bool mostrarC)
+{
+    LimparTela();
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    
+    SetConsoleTextAttribute(hConsole, 14); // Amarelo
+    cout << "\n=== VISUALIZAÇÃO 3D DOS VETORES ===\n\n";
+    SetConsoleTextAttribute(hConsole, 7); // Branco
+    
+    cout << "Vetor A: (" << A.x << ", " << A.y << ", " << A.z << ")\n";
+    cout << "Vetor B: (" << B.x << ", " << B.y << ", " << B.z << ")\n";
+    if(mostrarC) {
+        cout << "Vetor C: (" << C.x << ", " << C.y << ", " << C.z << ")\n";
+    }
+    cout << "\nAbrindo gráfico 3D com Python/Matplotlib...\n\n";
+    
+    // Construir argumentos
+    string args = to_string(A.x) + " " + to_string(A.y) + " " + to_string(A.z) + " ";
+    args += to_string(B.x) + " " + to_string(B.y) + " " + to_string(B.z);
+    
+    if(mostrarC) {
+        args += " " + to_string(C.x) + " " + to_string(C.y) + " " + to_string(C.z);
+    }
+    
+    // Obter diretório atual
+    char buffer[MAX_PATH];
+    GetCurrentDirectory(MAX_PATH, buffer);
+    string dirAtual = string(buffer);
+    
+    // Tentar diferentes comandos Python com caminho completo
+    string comandos[] = {
+        "python \"" + dirAtual + "\\plot_vectors.py\" " + args,
+        "python3 \"" + dirAtual + "\\plot_vectors.py\" " + args,
+        "py \"" + dirAtual + "\\plot_vectors.py\" " + args
+    };
+    
+    bool sucesso = false;
+    for(int i = 0; i < 3; i++) {
+        int resultado = system(comandos[i].c_str());
+        if(resultado == 0) {
+            sucesso = true;
+            break;
+        }
+    }
+    
+    if(!sucesso) {
+        SetConsoleTextAttribute(hConsole, 12); // Vermelho
+        cout << "\n⚠️  Erro ao abrir gráfico Python.\n";
+        cout << "Certifique-se de que Python e matplotlib estão instalados.\n";
+        cout << "Instale com: pip install matplotlib numpy\n";
+        cout << "Ou execute manualmente: python plot_vectors.py " << args << "\n";
+        SetConsoleTextAttribute(hConsole, 7); // Branco
+    }
+    
+    cout << "\n";
 }
 
 // =======================

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <random>
+#include "vetoresutils.h"
 
 using namespace std;
 
@@ -20,5 +21,6 @@ struct ConfigRNG {
 bool DesafioVetores(mt19937 &rng, const ConfigRNG &config = ConfigRNG());
 void MostraLabirinto(const vector<vector<char>> &lab, int px, int py);
 vector<vector<char>> GerarLabirinto(int linhas, int colunas, mt19937 &rng, const ConfigRNG &config = ConfigRNG());
+void DesenharVetores3D(const Vetor &A, const Vetor &B, const Vetor &C = Vetor{0,0,0}, bool mostrarC = false);
 
 #endif

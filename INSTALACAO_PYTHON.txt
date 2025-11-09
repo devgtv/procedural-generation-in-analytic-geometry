@@ -1,0 +1,29 @@
+INSTRUÇÕES PARA VISUALIZAÇÃO 3D DOS VETORES
+===========================================
+
+Para usar a visualização 3D dos vetores com Python/Matplotlib, você precisa:
+
+1. TER PYTHON INSTALADO
+   - Baixe em: https://www.python.org/downloads/
+   - Durante a instalação, marque "Add Python to PATH"
+
+2. INSTALAR AS BIBLIOTECAS NECESSÁRIAS
+   Abra o terminal/CMD e execute:
+   
+   pip install matplotlib numpy
+
+3. VERIFICAR SE ESTÁ FUNCIONANDO
+   Execute no terminal:
+   
+   python plot_vectors.py 1 2 3 4 5 6
+   
+   Deve abrir uma janela com o gráfico 3D.
+
+4. NO JOGO
+   Quando você resolver um desafio corretamente, o gráfico 3D será
+   aberto automaticamente usando Python/Matplotlib.
+
+NOTA: Se o Python não estiver no PATH, você pode precisar usar
+"python3" ao invés de "python" no código, ou ajustar o caminho
+completo do Python.
+
