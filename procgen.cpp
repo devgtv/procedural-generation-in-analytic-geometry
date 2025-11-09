@@ -12,6 +12,7 @@
 
 #include "vetoresutils.h" // Funções auxiliares de vetores (ProdutoEscalar, ProdutoVetorial, Modulo, etc.)
 #include "procgen.h"      // Funções auxiliares de geração procedural de labirintos
+#include "consoleutils.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ bool DesafioVetores(mt19937 &rng, const ConfigRNG &config)
     Vetor B{dist(rng), dist(rng), dist(rng)};
     Vetor C{dist(rng), dist(rng), dist(rng)};
 
-    system("cls"); // Limpa a tela
+    LimparTela(); // Limpa a tela
     cout << "\n=== Desafio Vetores (R³) ===\n";
     cout << "A = (" << A.x << "," << A.y << "," << A.z << ")\n";
     cout << "B = (" << B.x << "," << B.y << "," << B.z << ")\n";
@@ -113,17 +114,17 @@ bool DesafioVetores(mt19937 &rng, const ConfigRNG &config)
 
         // Efeito de alerta piscante
         for (int i = 0; i < 3; ++i) {
-            system("cls");
+            LimparTela();
             SetConsoleTextAttribute(hConsole, 12); // vermelho
             cout << "\n🔥 ALERTA! BOSS DESAFIO DETECTADO 🔥\n";
             Sleep(300);
-            system("cls");
+            LimparTela();
             SetConsoleTextAttribute(hConsole, 7);
             Sleep(300);
         }
 
         // Cor vermelha fixa e música de fundo
-        system("cls");
+        LimparTela();
         SetConsoleTextAttribute(hConsole, 12);
         PlaySound(TEXT("boss.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
@@ -146,7 +147,7 @@ bool DesafioVetores(mt19937 &rng, const ConfigRNG &config)
         PlaySound(NULL, 0, 0); // para música
         SetConsoleTextAttribute(hConsole, 7);
         Sleep(4000);
-        system("cls");
+        LimparTela();
         return correto;
     }
 
@@ -155,7 +156,7 @@ bool DesafioVetores(mt19937 &rng, const ConfigRNG &config)
     else cout << "❌ ERRADO!\n";
 
     Sleep(2000);
-    system("cls");
+    LimparTela();
     return correto;
 }
 

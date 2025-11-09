@@ -8,6 +8,7 @@
 #pragma comment(lib, "winmm.lib")
 #include "devtools.h"
 #include "procgen.h"
+#include "consoleutils.h"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ void ConfigurarProbabilidades(ConfigRNG &config)
     };
     
     while(true){
-        system("cls");
+        LimparTela();
         cout<<"=== CONFIGURAR PROBABILIDADES DE DESAFIOS ===\n\n";
         cout<<"Probabilidade atual (peso relativo):\n\n";
         
@@ -130,7 +131,7 @@ void Devtools(ConfigRNG &config)
     int opcao;
     
     while(true){
-        system("cls");
+        LimparTela();
         cout<<"=== DEVTOOLS ===\n\n";
         cout<<"1. Configurar probabilidades de desafios (RNG)\n";
         cout<<"2. Gerar e mostrar labirinto\n";
@@ -145,7 +146,7 @@ void Devtools(ConfigRNG &config)
             ConfigurarProbabilidades(config);
         }
         else if(opcao==2){
-            system("cls");
+            LimparTela();
             cout<<"=== GERADOR DE LABIRINTO ===\n\n";
             cout<<"Usando tamanho configurado: "<<config.linhasLabirinto<<"x"<<config.colunasLabirinto<<"\n\n";
             vector<vector<char>> lab = GerarLabirinto(config.linhasLabirinto, config.colunasLabirinto, rng, config);
@@ -154,7 +155,7 @@ void Devtools(ConfigRNG &config)
             _getch();
         }
         else if(opcao==3){
-            system("cls");
+            LimparTela();
             cout<<"=== TESTE DE DESAFIO ===\n\n";
             bool acerto = DesafioVetores(rng, config);
             cout<<"\nResultado: "<<(acerto ? "ACERTOU!" : "ERROU!")<<endl;
@@ -162,7 +163,7 @@ void Devtools(ConfigRNG &config)
             _getch();
         }
         else if(opcao==4){
-            system("cls");
+            LimparTela();
             cout<<"=== CONFIGURAÇÃO ATUAL ===\n\n";
             cout<<"Pesos das operações:\n";
             for(int i = 0; i < config.pesosOperacoes.size(); i++){
@@ -174,7 +175,7 @@ void Devtools(ConfigRNG &config)
             _getch();
         }
         else if(opcao==5){
-            system("cls");
+            LimparTela();
             cout<<"=== CONFIGURAR TAMANHO DO LABIRINTO ===\n\n";
             cout<<"Tamanho atual: "<<config.linhasLabirinto<<" linhas x "<<config.colunasLabirinto<<" colunas\n\n";
             cout<<"Novo número de linhas (mínimo 5, máximo 50): ";
