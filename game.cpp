@@ -240,6 +240,9 @@ void Jogar()
 
         // Verificar se chegou ao fim
         if(lab[px][py]=='S'){
+            // Descartar todas as teclas do buffer para evitar que continue processando
+            while(_kbhit()) _getch();
+            
             // Tocar música de vitória ao chegar na saída
             PlaySound(TEXT("saida.wav"), NULL, SND_FILENAME | SND_ASYNC);
             
