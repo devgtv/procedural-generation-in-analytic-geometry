@@ -216,7 +216,7 @@ void DesenharVetores3D(const Vetor &A, const Vetor &B, const Vetor &C, bool most
         }
     }
     
-    if(!sucesso) {
+    if(!sucesso) { // verrifica  de foi para charmar o console.
         SetConsoleTextAttribute(hConsole, 12); // Vermelho
         cout << "\n⚠️  Erro ao abrir gráfico Python.\n";
         cout << "Certifique-se de que Python e matplotlib estão instalados.\n";
