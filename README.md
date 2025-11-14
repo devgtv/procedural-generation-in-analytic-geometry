@@ -1,0 +1,3 @@
+O trabalho apresentado cumpriu o objetivo de aplicar conceitos de geometria analítica e cálculo vetorial em um contexto de geração procedural, demonstrando como fundamentos matemáticos podem ser integrados de maneira eficiente a processos computacionais. A implementação desenvolvida evidencia a importância desses conceitos para a criação de algoritmos robustos, escaláveis e capazes de produzir resultados complexos a partir de regras simples.
+
+Agradeço a todos os envolvidos pelo apoio, pela troca de conhecimento e pelo comprometimento ao longo do processo. As contribuições colaborativas foram essenciais para o amadurecimento das ideias e para a consolidação dos resultados alcançados.
