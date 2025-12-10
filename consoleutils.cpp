@@ -1,7 +1,7 @@
 #include <windows.h>
 #include "consoleutils.h"
 
-// Função para limpar a tela de forma eficiente (sem piscar)
+// limpa a tela
 void LimparTela()
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -10,7 +10,8 @@ void LimparTela()
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     DWORD dwConSize;
     
-    // Obter o tamanho do buffer da tela
+    
+    // PEGA o tamanho do buffer da tela
     if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
         return;
     

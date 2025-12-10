@@ -126,7 +126,7 @@ void ConfigurarProbabilidades(ConfigRNG &config)
 
 void Devtools(ConfigRNG &config)
 {
-    // A música do lobby já está tocando do menu, não precisa tocar novamente
+   // ja temos musica no looby
     mt19937 rng(time(nullptr));
     int opcao;
     
